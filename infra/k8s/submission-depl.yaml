@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: submission-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: submission
+  template:
+    metadata:
+      labels:
+        app: submission
+    spec:
+      containers:
+        - name: submission
+          image: teneshdev/submission
+          env:
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: 'edix'
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: submission-srv
+spec:
+  selector:
+    app: submission
+  ports:
+    - name: submission
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
