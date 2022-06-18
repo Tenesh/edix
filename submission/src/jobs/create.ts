@@ -8,7 +8,7 @@ export class createCompilerJob {
         this.kubeConfig = new k8s.KubeConfig();
     }
 
-    create() {
+    create(input:string) {
         this.kubeConfig.loadFromCluster();
         const batchV1Api = this.kubeConfig.makeApiClient(k8s.BatchV1Api);
         try {
@@ -19,18 +19,17 @@ export class createCompilerJob {
                     name: 'compiler-job'
                 },
                 spec: {
-                    parallelism: 1,
-                    completions: 1,
+                    ttlSecondsAfterFinished: 20,
                     template: {
                         metadata: {
                             name: 'compiler-job'
                         },
                         spec: {
-                            containers: {
-                                name: 'compiler-job',
-                                image: 'perl',
-                                command: ["perl", "-Mbignum=bpi", "-wle", "print bpi(2000)"]
-                            },
+                            containers: [{
+                                image: 'docker',
+                                name: 'docker',
+                                command: ["echo", input]
+                            }],
                             restartPolicy: "OnFailure"
                         }
                     }

@@ -8,6 +8,8 @@ const router = express.Router();
 
 router.post('/api/submission', async (req: Request, res: Response) => {
     const {code} = req.body;
+    const language = 'js';
+
     res.status(200).send(code);
 
     await new SubmissionCreatedPublisher(natsWrapper.client).publish({
@@ -15,9 +17,8 @@ router.post('/api/submission', async (req: Request, res: Response) => {
     })
 
     const compilerJob = new createCompilerJob;
-    compilerJob.create();
+    compilerJob.create('Hi Mate');
 
-});
-
+})
 
 export {router as createRouter};

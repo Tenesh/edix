@@ -12,6 +12,7 @@ spec:
       labels:
         app: submission
     spec:
+      serviceAccountName: create-job
       containers:
         - name: submission
           image: teneshdev/submission
