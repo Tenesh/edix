@@ -26,9 +26,9 @@ export class createCompilerJob {
                         },
                         spec: {
                             containers: [{
-                                image: 'docker',
-                                name: 'docker',
-                                command: ["echo", input]
+                                image: 'teneshdev/compiler',
+                                name: 'compiler',
+                                command: ["node", "file.js"]
                             }],
                             restartPolicy: "OnFailure"
                         }
